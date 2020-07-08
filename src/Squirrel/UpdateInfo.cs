@@ -62,19 +62,8 @@ namespace Squirrel
             if (currentVersion == null) {
                 return new UpdateInfo(null, new[] { latestFull }, packageDirectory);
             }
-
-            if (currentVersion.Version >= latestFull.Version) {
-                return new UpdateInfo(currentVersion, Enumerable.Empty<ReleaseEntry>(), packageDirectory);
-            }
-
-            var newerThanUs = availableReleases
-                .Where(x => x.Version > currentVersion.Version)
-                .OrderBy(v => v.Version);
-
-            var deltasSize = newerThanUs.Where(x => x.IsDelta).Sum(x => x.Filesize);
-
-            return (deltasSize < latestFull.Filesize && deltasSize > 0) ? 
-                new UpdateInfo(currentVersion, newerThanUs.Where(x => x.IsDelta).ToArray(), packageDirectory) : 
+            
+            return
                 new UpdateInfo(currentVersion, new[] { latestFull }, packageDirectory);
         }
     }
